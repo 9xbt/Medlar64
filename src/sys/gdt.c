@@ -31,5 +31,5 @@ void gdt_init() {
         .offset = (u64)&gdt
     };
 
-    asm volatile ("lgdt %0" :: "m"(gdt) : "memory");
+    asm volatile ("lgdt %0" :: "m"(gdt_descriptor) : "memory");
 }
