@@ -2,6 +2,7 @@
 #include <limine.h>
 #include <sys/io.h>
 #include <sys/gdt.h>
+#include <sys/idt.h>
 #include <lib/printf.h>
 #include <dev/char/serial.h>
 #include <flanterm/flanterm.h>
@@ -82,6 +83,9 @@ void _start(void) {
     printf("Welcome to \033[92mAlpine\033[0m!\n\n");
 
     gdt_init();
+    idt_init();
+
+    //asm volatile("int $1");
 
     hcf();
 }
