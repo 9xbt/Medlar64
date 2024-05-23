@@ -77,7 +77,7 @@ int_stub%+%1:
     irq_pusha
 
     mov rdi, rsp
-    call isr_handler    ; call the actual handler
+    call irq_handler    ; call the actual handler
 
     irq_popa
 
@@ -346,8 +346,8 @@ irq_stub 255
 section .data
 
 idt_int_table:
-  %assign i 0
-  %rep 256
-    dq int_stub%+i
-    %assign i i+1
-  %endrep
+    %assign i 0
+    %rep 256
+        dq int_stub%+i
+        %assign i i+1
+    %endrep
