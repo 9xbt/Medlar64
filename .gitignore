@@ -7,4 +7,5 @@
 
 # Disk images
 *.iso
+*.img
 *.hdd
