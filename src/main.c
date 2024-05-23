@@ -27,6 +27,15 @@ void putchar_(char c) {
     flanterm_write(ft_ctx, str, 1);
 }
 
+int mubsan_log(const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    const int ret = vprintf(format, args);
+    va_end(args);
+    
+    return ret;
+}
+
 static void hcf(void) {
     for (;;)
         asm volatile ("hlt");
@@ -67,6 +76,20 @@ void _start(void) {
     printf("Welcome to \033[92mAlpine\033[0m!\n\n");
 
     gdt_init();
+
+    int arr[4];
+    arr[4] = 10;
+
+    _Bool* boolPtr;
+    int value = 188;
+
+    boolPtr = (_Bool*)&value; // Assign a non-zero value to a _Bool pointer
+
+    // Print the value to avoid optimization
+    printf("Bool value: %d\n", *boolPtr);
+
+    int* val = NULL;
+    int a = *val;
 
     hcf();
 }

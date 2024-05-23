@@ -22,7 +22,8 @@ CFLAGS = \
     -mno-mmx \
     -mno-sse \
     -mno-sse2 \
-    -mno-red-zone
+    -mno-red-zone \
+	-fsanitize=undefined
 	
 # C preprocessor flags
 CPPFLAGS = \
