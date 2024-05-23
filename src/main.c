@@ -1,5 +1,6 @@
 #include <types.h>
 #include <limine.h>
+#include <sys/io.h>
 #include <sys/gdt.h>
 #include <lib/printf.h>
 #include <flanterm/flanterm.h>

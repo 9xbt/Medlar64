@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "fb.h": "c"
+        "fb.h": "c",
+        "*.tcc": "cpp"
     }
 }

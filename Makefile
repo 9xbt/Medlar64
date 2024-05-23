@@ -49,7 +49,7 @@ NASMFLAGS = \
 # QEMU flags
 QEMUFLAGS = \
 	-m 2G \
-	-serial stdio \
+	-debugcon stdio \
 	-cdrom $(IMAGE_NAME).iso \
 	-boot d \
 	-drive file="hdd.img",format="raw"
@@ -65,15 +65,15 @@ OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.a
 KERNEL = SivertOS
 IMAGE_NAME = SivertOS
 
-all-kvm: limine bin/$(KERNEL) iso hdd run-kvm
-
 all: limine bin/$(KERNEL) iso hdd run
+
+all-kvm: limine bin/$(KERNEL) iso hdd run-kvm
 
 run:
 	qemu-system-x86_64 $(QEMUFLAGS)
 
 run-kvm:
-	qemu-system-x86_64 $(QEMUFLAGS) -accel kvm
+	qemu-system-x86_64 $(QEMUFLAGS) -enable-kvm
 
 iso:
 	rm -rf iso_root
