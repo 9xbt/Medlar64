@@ -3,6 +3,7 @@
 #include <sys/io.h>
 #include <sys/gdt.h>
 #include <lib/printf.h>
+#include <dev/char/serial.h>
 #include <flanterm/flanterm.h>
 #include <flanterm/backends/fb.h>
 
@@ -32,10 +33,10 @@ void putchar_(char c) {
     flanterm_write(ft_ctx, str, 1);
 }
 
-int mubsan_log(const char* format, ...) {
+int mubsan_log(const char* fmt, ...) {
     va_list args;
-    va_start(args, format);
-    vprintf(format, args);
+    va_start(args, fmt);
+    vfctprintf(serial_write_char, NULL, fmt, args);
     va_end(args);
     
     hcf();
