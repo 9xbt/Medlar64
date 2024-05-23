@@ -4,6 +4,7 @@
 #include <sys/gdt.h>
 #include <sys/idt.h>
 #include <lib/printf.h>
+#include <dev/pic.h>
 #include <dev/char/serial.h>
 #include <flanterm/flanterm.h>
 #include <flanterm/backends/fb.h>
@@ -46,6 +47,7 @@ int mubsan_log(const char* fmt, ...) {
     va_end(args);
     
     hcf();
+    return 0;
 }
 
 void _start(void) {
@@ -84,8 +86,7 @@ void _start(void) {
 
     gdt_init();
     idt_init();
-
-    //asm volatile("int $1");
+    pic_remap();
 
     hcf();
 }

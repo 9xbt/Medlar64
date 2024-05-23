@@ -2,6 +2,7 @@
     "files.associations": {
         "fb.h": "c",
         "*.tcc": "cpp",
-        "serial.h": "c"
+        "serial.h": "c",
+        "vector": "c"
     }
 }
