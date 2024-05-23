@@ -1,5 +1,6 @@
 #include <types.h>
 #include <limine.h>
+#include <sys/gdt.h>
 #include <lib/printf.h>
 #include <flanterm/flanterm.h>
 #include <flanterm/backends/fb.h>
@@ -63,6 +64,8 @@ void _start(void) {
     );
 
     printf("Welcome to \033[92mAlpine\033[0m!\n\n");
+
+    gdt_init();
 
     hcf();
 }

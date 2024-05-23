@@ -44,8 +44,6 @@ LDFLAGS = \
 # NASM flags
 NASMFLAGS = \
 	-Wall \
-	-w-reloc-rel-dword \
-	-w-reloc-abs-qword \
     -f elf64
 
 # QEMU flags
@@ -54,7 +52,7 @@ QEMUFLAGS = \
 	-serial stdio \
 	-cdrom $(IMAGE_NAME).iso \
 	-boot d \
-	-drive file="ext2.hdd",format="raw"
+	-drive file="hdd.img",format="raw"
 
 # Source files
 CFILES := $(shell cd src && find -L * -type f -name '*.c')
@@ -95,9 +93,9 @@ iso:
 	rm -rf iso_root
 
 hdd:
-ifeq (,$(wildcard ext2.hdd))
-	truncate -s 100M ext2.hdd
-	mkfs.ext2 ext2.hdd
+ifeq (,$(wildcard hdd.img))
+	truncate -s 100M hdd.img
+	mkfs.ext2 hdd.img
 endif
 
 bin/$(KERNEL): Makefile config/linker.ld $(OBJ)
