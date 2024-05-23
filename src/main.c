@@ -22,6 +22,11 @@ static volatile struct limine_framebuffer_request framebuffer_request = {
 struct limine_framebuffer *framebuffer = NULL;
 struct flanterm_context *ft_ctx = NULL;
 
+static void hcf(void) {
+    for (;;)
+        asm volatile ("hlt");
+}
+
 void putchar_(char c) {
     char str[] = {c};
     flanterm_write(ft_ctx, str, 1);
@@ -30,15 +35,10 @@ void putchar_(char c) {
 int mubsan_log(const char* format, ...) {
     va_list args;
     va_start(args, format);
-    const int ret = vprintf(format, args);
+    vprintf(format, args);
     va_end(args);
     
-    return ret;
-}
-
-static void hcf(void) {
-    for (;;)
-        asm volatile ("hlt");
+    hcf();
 }
 
 void _start(void) {

@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "fb.h": "c",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "serial.h": "c"
     }
 }
