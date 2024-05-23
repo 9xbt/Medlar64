@@ -78,19 +78,8 @@ void _start(void) {
 
     gdt_init();
 
-    int arr[4];
-    arr[4] = 10;
-
-    _Bool* boolPtr;
-    int value = 188;
-
-    boolPtr = (_Bool*)&value; // Assign a non-zero value to a _Bool pointer
-
-    // Print the value to avoid optimization
-    printf("Bool value: %d\n", *boolPtr);
-
-    int* val = NULL;
-    int a = *val;
+    char a;
+    *(char*)a = 'A';
 
     hcf();
 }
