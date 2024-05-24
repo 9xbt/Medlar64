@@ -62,7 +62,6 @@ void _start(void) {
 
     framebuffer = framebuffer_request.response->framebuffers[0];
 
-    u32 bg = 0x000000;
     u32 fg = 0xffffff;
 
     ft_ctx = flanterm_fb_init(
@@ -75,18 +74,20 @@ void _start(void) {
         framebuffer->blue_mask_size, framebuffer->blue_mask_shift,
         NULL,
         NULL, NULL,
-        &bg, &fg,
+        NULL, &fg,
         NULL, NULL,
         NULL, 0, 0, 1,
         0, 0,
         0
     );
 
-    printf("Welcome to \033[92mAlpine\033[0m!\n\n");
+    printf("Welcome to \033[1;36mAlpine\033[0m!\n\n");
 
     gdt_init();
     idt_init();
     pic_remap();
+
+    asm volatile ("int $80");
 
     hcf();
 }

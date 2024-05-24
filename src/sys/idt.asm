@@ -48,7 +48,7 @@ int_stub%+%1:
     irq_pusha
 
     mov rdi, rsp
-    call isr_handler    ; call the actual handler
+    call isr_handler    ; call the isr handler
 
     irq_popa
 
@@ -62,7 +62,7 @@ int_stub%+%1:
     irq_pusha
 
     mov rdi, rsp
-    call isr_handler    ; call the actual handler
+    call isr_handler    ; call the isr handler
 
     irq_popa
 
@@ -70,14 +70,14 @@ int_stub%+%1:
     iretq
 %endmacro
 
-%macro irq_stub 1       ; same thing as isr_no_err_stub, but for normal interrupts
+%macro irq_stub 1       ; same thing as isr_no_err_stub, but calls the irq handler instead
 int_stub%+%1:
     push 0              ; since we still need an error code, just push 0
     push %1             ; push the interrupt number
     irq_pusha
 
     mov rdi, rsp
-    call irq_handler    ; call the actual handler
+    call irq_handler    ; call the irq handler
 
     irq_popa
 

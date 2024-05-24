@@ -1,8 +1,3 @@
-/*
- * CREDITS: astrido
- * https://github.com/asterd-og/ZanOS/
- */
-
 #pragma once
 
 #include <types.h>
