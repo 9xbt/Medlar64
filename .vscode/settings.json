@@ -3,6 +3,7 @@
         "fb.h": "c",
         "*.tcc": "cpp",
         "serial.h": "c",
-        "vector": "c"
+        "vector": "c",
+        "io.h": "c"
     }
 }

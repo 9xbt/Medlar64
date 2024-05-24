@@ -3,9 +3,10 @@
 #include <sys/io.h>
 #include <sys/gdt.h>
 #include <sys/idt.h>
-#include <lib/printf.h>
 #include <dev/pic.h>
 #include <dev/char/serial.h>
+#include <lib/libc.h>
+#include <lib/printf.h>
 #include <flanterm/flanterm.h>
 #include <flanterm/backends/fb.h>
 
@@ -86,8 +87,6 @@ void _start(void) {
     gdt_init();
     idt_init();
     pic_remap();
-
-    asm volatile ("int $128");
-
+    
     hcf();
 }
