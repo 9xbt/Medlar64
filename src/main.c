@@ -87,7 +87,7 @@ void _start(void) {
     idt_init();
     pic_remap();
 
-    asm volatile ("int $80");
+    asm volatile ("int $128");
 
     hcf();
 }

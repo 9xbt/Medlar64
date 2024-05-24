@@ -79,6 +79,11 @@ void isr_handler(regs* r) {
     if (r->int_no == 0xff)
         return; // spurious interrupt
 
+    if (r->int_no == 0x80) {
+        printf("Syscall!\n"); // syscall
+        return;
+    }
+
     asm volatile ("cli");
     dprintf("isr_handler(): %s! RIP: 0x%llx CS: 0x%x SS: 0x%x\n", isr_errors[r->int_no], r->rip, r->cs, r->ss);
     for (;;) asm volatile ("hlt");
