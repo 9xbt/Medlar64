@@ -18,10 +18,17 @@ LIMINE_BASE_REVISION(1)
 // the compiler does not optimise them away, so, in C, they should
 // NOT be made "static".
 
-volatile struct limine_framebuffer_request framebuffer_request = {
+struct limine_framebuffer_request framebuffer_request = {
     .id = LIMINE_FRAMEBUFFER_REQUEST,
     .revision = 0
 };
+
+struct limine_hhdm_request hhdm_request = {
+    .id = LIMINE_HHDM_REQUEST,
+    .revision = 0  
+};
+
+u64 hhdm_offset;
 
 struct limine_framebuffer *framebuffer = NULL;
 struct flanterm_context *ft_ctx = NULL;
@@ -61,6 +68,7 @@ void _start(void) {
         framebuffer_request.response->framebuffer_count < 1)
         hcf();
 
+    hhdm_offset = hhdm_request.response->offset;
     framebuffer = framebuffer_request.response->framebuffers[0];
 
     u32 fg = 0xffffff;

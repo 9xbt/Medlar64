@@ -23,7 +23,7 @@ void pmm_init() {
     u64 top_address = 0;
 
     for (u64 i = 0; i < pmm_memmap->entry_count; i++) {
-        if (entries[i]->type != LIMINE_MEMMAP_USABLE) continue;
+        if (entries[i]->type != LIMINE_MEMMAP_USABLE) continue; /* ignore unusable memmaps */
         top_address = entries[i]->base + entries[i]->length;
         if (top_address > higher_address)
             higher_address = top_address;
@@ -39,5 +39,7 @@ void pmm_init() {
 
     for (u64 i = 0; i < pmm_memmap->entry_count; i++) {
         if (entries[i]->type != LIMINE_MEMMAP_USABLE || entries[i]->length < bitmap_size) continue;
+        pmm_bitmap = (u8*)HIGHER_HALF(entries[i]->base); /* use the higher half of memory */
+        
     }
 }
