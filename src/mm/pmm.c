@@ -9,27 +9,35 @@ struct limine_memmap_request memmap_request = {
 
 struct limine_memmap_response* pmm_memmap;
 
-u64 pmm_total_pages = 0;
+u8* pmm_bitmap;
+u64 pmm_used_pages = 0;
+u64 pmm_page_count = 0;
 
 void pmm_init() {
     pmm_memmap = memmap_request.response;
     struct limine_memmap_entry** entries = pmm_memmap->entries;
 
-    u64 higher_address;
-    u64 top_address;
-
     dprintf("pmm_init(): entry count: %d\n", pmm_memmap->entry_count);
 
-    for (u64 i = 0; i < pmm_memmap->entry_count; i++) {
-        if (entries[i]->type != LIMINE_MEMMAP_USABLE)
-            continue; // skip unusable memmaps
+    u64 higher_address = 0;
+    u64 top_address = 0;
 
+    for (u64 i = 0; i < pmm_memmap->entry_count; i++) {
+        if (entries[i]->type != LIMINE_MEMMAP_USABLE) continue;
         top_address = entries[i]->base + entries[i]->length;
         if (top_address > higher_address)
             higher_address = top_address;
+
+        dprintf("pmm_init(): entry length: %" PRId64 "\n", entries[i]->length);
     }
 
-    pmm_total_pages = higher_address / PAGE_SIZE;
+    pmm_page_count = higher_address / PAGE_SIZE;
+    u64 bitmap_size = ALIGN_UP(pmm_page_count / 8, PAGE_SIZE);
 
-    dprintf("pmm_init(): total pages: %d\n", pmm_total_pages);
+    dprintf("pmm_init(): total pages: %" PRId64 "\n", pmm_page_count);
+    dprintf("pmm_init(): bitmap size: %" PRId64 "\n", bitmap_size);
+
+    for (u64 i = 0; i < pmm_memmap->entry_count; i++) {
+        if (entries[i]->type != LIMINE_MEMMAP_USABLE || entries[i]->length < bitmap_size) continue;
+    }
 }
