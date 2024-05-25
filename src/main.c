@@ -1,10 +1,10 @@
 #include <types.h>
 #include <limine.h>
+#include <mm/pmm.h>
 #include <sys/io.h>
 #include <sys/gdt.h>
 #include <sys/idt.h>
 #include <dev/pic.h>
-#include <dev/char/serial.h>
 #include <lib/libc.h>
 #include <lib/printf.h>
 #include <flanterm/flanterm.h>
@@ -87,6 +87,7 @@ void _start(void) {
     gdt_init();
     idt_init();
     pic_remap();
+    pmm_init();
     
     hcf();
 }
