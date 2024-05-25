@@ -40,6 +40,5 @@ void pmm_init() {
     for (u64 i = 0; i < pmm_memmap->entry_count; i++) {
         if (entries[i]->type != LIMINE_MEMMAP_USABLE || entries[i]->length < bitmap_size) continue;
         pmm_bitmap = (u8*)HIGHER_HALF(entries[i]->base); /* use the higher half of memory */
-        
     }
 }
