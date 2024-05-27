@@ -52,8 +52,7 @@ QEMUFLAGS = \
 	-m 2G \
 	-debugcon stdio \
 	-cdrom $(IMAGE_NAME).iso \
-	-boot d \
-	-drive file="hdd.img",format="raw"
+	-boot d
 
 # Source files
 CFILES := $(shell cd src && find -L * -type f -name '*.c')
@@ -66,9 +65,9 @@ OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.a
 KERNEL = SivertOS
 IMAGE_NAME = SivertOS
 
-all: limine bin/$(KERNEL) iso hdd run
+all: limine bin/$(KERNEL) iso run
 
-all-kvm: limine bin/$(KERNEL) iso hdd run-kvm
+all-kvm: limine bin/$(KERNEL) iso run-kvm
 
 run:
 	qemu-system-x86_64 $(QEMUFLAGS)
@@ -92,12 +91,6 @@ iso:
 		iso_root -o $(IMAGE_NAME).iso
 	./limine/limine bios-install $(IMAGE_NAME).iso
 	rm -rf iso_root
-
-hdd:
-ifeq (,$(wildcard hdd.img))
-	truncate -s 100M hdd.img
-	mkfs.ext2 hdd.img
-endif
 
 bin/$(KERNEL): Makefile config/linker.ld $(OBJ)
 	mkdir -p "$$(dirname $@)"

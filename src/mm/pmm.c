@@ -11,6 +11,7 @@ struct limine_memmap_request memmap_request = {
 struct limine_memmap_response* pmm_memmap;
 
 u8* pmm_bitmap;
+u64 pmm_last_page = 0;
 u64 pmm_used_pages = 0;
 u64 pmm_page_count = 0;
 
@@ -59,3 +60,6 @@ void pmm_init() {
     dprintf("pmm_init(): PMM initialized successfully at address %lx!\n", (u64)pmm_bitmap);
 }
 
+u64 pmm_find_pages(u64 n) {
+    /* todo: finish this when i feel better */
+}
