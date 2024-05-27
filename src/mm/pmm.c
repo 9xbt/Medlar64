@@ -58,3 +58,4 @@ void pmm_init() {
 
     dprintf("pmm_init(): PMM initialized successfully at address %lx!\n", (u64)pmm_bitmap);
 }
+

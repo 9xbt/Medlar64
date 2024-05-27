@@ -4,6 +4,7 @@
         "*.tcc": "cpp",
         "serial.h": "c",
         "vector": "c",
-        "io.h": "c"
+        "io.h": "c",
+        "flanterm.h": "c"
     }
 }

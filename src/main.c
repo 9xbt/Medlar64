@@ -5,6 +5,7 @@
 #include <sys/gdt.h>
 #include <sys/idt.h>
 #include <dev/pic.h>
+#include <dev/char/serial.h>
 #include <lib/libc.h>
 #include <lib/printf.h>
 #include <flanterm/flanterm.h>
@@ -45,17 +46,17 @@ void putchar_(char c) {
 
 void mubsan_write_char(char c, void* extra) {
     (void)extra;
-    outb(0xe9, c);
+    char msg[] = {c, 0};
+    dprintf(msg);
 }
 
-int mubsan_log(const char* fmt, ...) {
+void mubsan_log(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
     vfctprintf(mubsan_write_char, NULL, fmt, args);
     va_end(args);
     
     hcf();
-    return 0;
 }
 
 void _start(void) {

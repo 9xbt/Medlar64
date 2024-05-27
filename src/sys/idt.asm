@@ -1,6 +1,3 @@
-; Credits for the macros: astrido
-; https://github.com/asterd-og/ZanOS
-
 [extern isr_handler]
 [extern irq_handler]
 [global idt_int_table]
