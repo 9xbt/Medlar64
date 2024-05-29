@@ -13,4 +13,4 @@
 #define PHYSICAL(ptr) ((void*)((u64)ptr) - hhdm_offset)
 
 void pmm_init();
-u64 pmm_find_pages(u64 n);
+void* pmm_alloc(usize n);

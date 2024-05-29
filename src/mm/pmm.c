@@ -21,8 +21,6 @@ void pmm_init() {
     pmm_memmap = memmap_request.response;
     struct limine_memmap_entry** entries = pmm_memmap->entries;
 
-    dprintf("pmm_init(): entry count: %ld\n", pmm_memmap->entry_count);
-
     u64 higher_address = 0;
     u64 top_address = 0;
 
@@ -36,9 +34,6 @@ void pmm_init() {
     pmm_page_count = higher_address / PAGE_SIZE;
     u64 bitmap_size = ALIGN_UP(pmm_page_count / 8, PAGE_SIZE);
 
-    dprintf("pmm_init(): total pages: %ld\n", pmm_page_count);
-    dprintf("pmm_init(): bitmap size: %ld\n", bitmap_size);
-
     for (u64 i = 0; i < pmm_memmap->entry_count; i++) {
         if (entries[i]->type != LIMINE_MEMMAP_USABLE || entries[i]->length < bitmap_size) continue;
         /* we found a usuable memmap! use it! */
@@ -47,7 +42,6 @@ void pmm_init() {
         /* the size of the bitmap to the memmap entry */
         entries[i]->base += bitmap_size;
         entries[i]->length -= bitmap_size;
-        dprintf("pmm_init(): default entry base: %lx\n            default entry length: %ld\n", entries[i]->base, entries[i]->length);
         break;
     }
 
@@ -91,7 +85,26 @@ u64 pmm_find_pages(u64 n) {
             pages = 0;
         }
     }
-
-    dprintf("pmm_find_pages(): Allocation failed!\n");
     return 0;
+}
+
+void* pmm_alloc(usize n) {
+    u64 pages = pmm_find_pages(n);
+    if (pages == 0) {
+        pmm_last_page = 0;
+        pages = pmm_find_pages(n);
+        if (pages == 0) {
+            dprintf("pmm_alloc(): Failed to allocate %ld pages: Memory exhausted\n", n);
+            return NULL;
+        }
+    }
+
+    u64 physical_addr = pages * PAGE_SIZE;
+    return (void*)(physical_addr);
+}
+
+void pmm_free(void* p, usize n) {
+    u64 page = (u64)p / PAGE_SIZE;
+    for (u64 i = 0; i < n; i++)
+        bitmap_clear(pmm_bitmap, page + i);
 }

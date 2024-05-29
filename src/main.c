@@ -97,9 +97,6 @@ void _start(void) {
     idt_init();
     pic_remap();
     pmm_init();
-
-    u64 addr = (u64)pmm_find_pages(1);
-    dprintf("_start(): Free page address: %lx\n", addr);
     
     hcf();
 }
