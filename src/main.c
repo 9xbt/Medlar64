@@ -1,6 +1,7 @@
 #include <types.h>
 #include <limine.h>
 #include <mm/pmm.h>
+#include <mm/vmm.h>
 #include <sys/io.h>
 #include <sys/gdt.h>
 #include <sys/idt.h>
@@ -97,6 +98,7 @@ void _start(void) {
     idt_init();
     pic_remap();
     pmm_init();
+    vmm_init();
     
     hcf();
 }
