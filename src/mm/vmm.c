@@ -11,6 +11,7 @@ struct limine_kernel_address_request kernel_address_request = {
 
 uptr* vmm_kernel_pm = NULL;
 
+__attribute__((no_sanitize("undefined")))
 void vmm_init() {
     vmm_kernel_pm = (uptr*)HIGHER_HALF(pmm_alloc(1));
     memset(vmm_kernel_pm, 0, PAGE_SIZE);
