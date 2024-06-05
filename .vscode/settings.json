@@ -1,10 +1,13 @@
 {
     "files.associations": {
+        "*.inc": "nasm",
         "fb.h": "c",
         "*.tcc": "cpp",
         "serial.h": "c",
         "vector": "c",
         "io.h": "c",
-        "flanterm.h": "c"
+        "flanterm.h": "c",
+        "type_traits": "c",
+        "*.old": "c"
     }
 }

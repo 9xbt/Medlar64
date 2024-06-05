@@ -100,5 +100,7 @@ void _start(void) {
     pmm_init();
     vmm_init();
     
+    dprintf("kernel");
+
     hcf();
 }

@@ -51,10 +51,11 @@ NASMFLAGS = \
 
 # QEMU flags
 QEMUFLAGS = \
-	-m 2G \
+	-m 4G \
 	-debugcon stdio \
 	-cdrom $(IMAGE_NAME).iso \
-	-boot d
+	-boot d \
+	-no-reboot -no-shutdown
 
 # Source files
 CFILES := $(shell cd src && find -L * -type f -name '*.c')
