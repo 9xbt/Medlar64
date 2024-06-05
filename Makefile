@@ -65,8 +65,8 @@ HEADER_DEPS := $(addprefix obj/,$(CFILES:.c=.c.d) $(ASFILES:.S=.S.d))
 
 # Output
 OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.asm.o))
-KERNEL = SivertOS
-IMAGE_NAME = SivertOS
+KERNEL = alpine
+IMAGE_NAME = alpine
 
 all: limine bin/$(KERNEL) iso run
 

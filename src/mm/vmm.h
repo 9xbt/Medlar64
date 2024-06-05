@@ -13,11 +13,5 @@
 
 typedef uptr pagemap;
 
-extern symbol text_start_ld;
-extern symbol text_end_ld;
-extern symbol rodata_start_ld;
-extern symbol rodata_end_ld;
-extern symbol data_start_ld;
-extern symbol data_end_ld;
-
 void vmm_init();
+void vmm_map(pagemap *pm, uptr virt, uptr phys, u64 flags);

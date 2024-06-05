@@ -51,7 +51,6 @@ SECTIONS
         *(.data .data.*)
     } :data
 
-    data_end_ld = .;
 
     /* Dynamic section for relocations, both in its own PHDR and inside data PHDR */
     .dynamic : {
@@ -67,6 +66,7 @@ SECTIONS
         *(COMMON)
     } :data
 
+    data_end_ld = .;
     /* Discard .note.* and .eh_frame since they may cause issues on some hosts. */
     /DISCARD/ : {
         *(.eh_frame)
