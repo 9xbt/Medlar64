@@ -47,11 +47,13 @@ void idt_init() {
     for (u16 i = 0; i < 256; i++) {
         idt_set_entry(i, idt_int_table[i], i == 0x80 ? 0xEE : 0x8E);
     }
+    dprintf("idt: successfully populated 256 entries\n");
 
     idt_descriptor = (idtr) {
         .size = sizeof(idt_entry) * 256 - 1,
         .offset = (u64)idt_entries
     };
+    dprintf("idt: idt descriptor located at %lx\n", (u64)&idt_descriptor);
 
     asm volatile ("lidt %0" :: "m"(idt_descriptor));
     asm volatile ("sti");
@@ -80,7 +82,7 @@ void isr_handler(regs* r) {
         return; // spurious interrupt
 
     if (r->int_no == 0x80) {
-        printf("Syscall!\n"); // syscall
+        printf("Syscall!\n"); // TODO: handle syscalls properly
         return;
     }
 

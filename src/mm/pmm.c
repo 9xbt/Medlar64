@@ -38,6 +38,7 @@ void pmm_init() {
         if (entries[i]->type != LIMINE_MEMMAP_USABLE || entries[i]->length < bitmap_size) continue;
         /* we found a usuable memmap! use it! */
         pmm_bitmap = (u8*)HIGHER_HALF(entries[i]->base); /* use the higher half of memory */
+        memset(pmm_bitmap, 0xFF, bitmap_size);
         /* since we're storing the bitmap at the start of the memmap, subtract */
         /* the size of the bitmap to the memmap entry */
         entries[i]->base += bitmap_size;
@@ -51,7 +52,7 @@ void pmm_init() {
             bitmap_clear(pmm_bitmap, (entries[i]->base + o) / PAGE_SIZE); /* clear the bitmap */
     }
 
-    dprintf("pmm_init(): PMM initialized successfully at address %lx!\n", (u64)pmm_bitmap);
+    dprintf("pmm: initialized at address %lx\n", (u64)pmm_bitmap);
 }
 
 u64 pmm_find_pages(u64 n) {
@@ -60,7 +61,7 @@ u64 pmm_find_pages(u64 n) {
 
     while (pages < n) {
         if (pmm_last_page == pmm_page_count) {
-            dprintf("pmm_find_pages(): Memory exhausted!\n");
+            dprintf("pmm: failed to find a free page: memory exhausted!\n");
             return 0;
         }
 
@@ -94,7 +95,7 @@ void* pmm_alloc(usize n) {
         pmm_last_page = 0;
         pages = pmm_find_pages(n);
         if (pages == 0) {
-            dprintf("pmm_alloc(): Failed to allocate %ld pages: Memory exhausted\n", n);
+            dprintf("pmm: failed to allocate %ld pages: memory exhausted\n", n);
             return NULL;
         }
     }
