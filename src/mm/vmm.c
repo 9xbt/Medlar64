@@ -30,8 +30,6 @@ void vmm_init() {
     uptr phys_base = kernel_address_request.response->physical_base;
     uptr virt_base = kernel_address_request.response->virtual_base;
 
-    /* im declaring start addresses here even if i set the text uptr to this just
-    * for consistency*/
     uptr text_start = ALIGN_DOWN((uptr)text_start_ld, PAGE_SIZE);
     uptr text_end = ALIGN_UP((uptr)text_end_ld, PAGE_SIZE);
     uptr rodata_start = ALIGN_DOWN((uptr)rodata_start_ld, PAGE_SIZE);
@@ -54,7 +52,7 @@ void vmm_init() {
               PTE_PRESENT | PTE_WRITABLE);
     }
 
-    dprintf("vmm: kernel page map located at %lx", (u64)vmm_kernel_pm);
+    dprintf("vmm: kernel page map located at %lx\n", (u64)vmm_kernel_pm);
 }
 
 __attribute__((no_sanitize("undefined")))
