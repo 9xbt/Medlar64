@@ -14,8 +14,27 @@ bool acpi_use_xsdt = false;
 
 void *acpi_root_sdt;
 
-void *acpi_find_table(const char *name) {
-
+void *acpi_find_table(const char *signature) {
+    if (!acpi_use_xsdt) {
+        acpi_rsdt *rsdt = (acpi_rsdt*)acpi_root_sdt;
+        u32 entries = (rsdt->sdt.length - sizeof(rsdt->sdt)) / 4;
+        
+        for (u32 i = 0; i < entries; i++) {
+            acpi_sdt *sdt = (acpi_sdt*)HIGHER_HALF(*((u32*)rsdt->table + i));
+            if (!memcmp(sdt->signature, signature, 4)) return (void*)sdt;
+        }
+        return NULL;
+    }
+    
+    /* use xsdt */
+    acpi_xsdt *rsdt = (acpi_xsdt*)acpi_root_sdt;
+    u32 entries = (rsdt->sdt.length - sizeof(rsdt->sdt)) / 8;
+        
+    for (u32 i = 0; i < entries; i++) {
+        acpi_sdt *sdt = (acpi_sdt*)HIGHER_HALF(*((u64*)rsdt->table + i));
+        if (!memcmp(sdt->signature, signature, 4)) return (void*)sdt;
+    }
+    return NULL;
 }
 
 void acpi_init() {
