@@ -35,7 +35,7 @@ u64 hhdm_offset;
 struct limine_framebuffer *framebuffer = NULL;
 struct flanterm_context *ft_ctx = NULL;
 
-static void hcf(void) {
+void hcf(void) {
     for (;;)
         asm volatile ("hlt");
 }
@@ -92,13 +92,15 @@ void _start(void) {
         0
     );
 
-    printf("Welcome to \033[1;36mAlpine\033[0m!\n\n");
-
     gdt_init();
     idt_init();
     pic_remap();
     pmm_init();
     vmm_init();
+
+    printf("\nWelcome to \033[1;36mAlpine\033[0m!\n\n");
+
+    acpi_init();
 
     hcf();
 }
