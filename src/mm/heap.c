@@ -11,3 +11,17 @@ heap *heap_create() {
     h->block_head->used = true;
     return h;
 }
+
+__attribute__((no_sanitize("undefined")))
+void *heap_alloc(heap *h, u64 n) {
+    u64 pages = DIV_CEILING(sizeof(heap_block) + n, PAGE_SIZE);
+    heap_block *block = (heap_block*)HIGHER_HALF(pmm_alloc(pages));
+    block->magic = HEAP_MAGIC;
+    block->size = n;
+    block->used = true;
+    block->prev = h->block_head->prev;
+    block->next = h->block_head;
+    h->block_head->prev->next = block;
+    h->block_head->prev = block;
+    return (void*)block + sizeof(heap_block);
+}

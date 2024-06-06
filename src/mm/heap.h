@@ -4,7 +4,7 @@
 
 #define HEAP_MAGIC 0xdeadcafe
 
-typedef struct {
+typedef struct heap_block { /* gcc likes doing the funny forcing me to specify the name twice */
     bool used;
     u32 magic;
     u64 size;
@@ -18,3 +18,4 @@ typedef struct {
 } heap;
 
 heap *heap_create();
+void *heap_alloc(heap *h, u64 n);

@@ -100,8 +100,7 @@ void _start(void) {
     vmm_init();
 
     printf("\nWelcome to \033[1;36mAlpine\033[0m!\n\n");
-
-    printf("heap: address: %lx\n", (u64)heap_create());
+    
     acpi_init();
 
     hcf();
