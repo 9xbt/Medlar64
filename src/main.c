@@ -2,6 +2,7 @@
 #include <limine.h>
 #include <mm/pmm.h>
 #include <mm/vmm.h>
+#include <mm/heap.h>
 #include <sys/io.h>
 #include <sys/gdt.h>
 #include <sys/idt.h>
@@ -100,6 +101,7 @@ void _start(void) {
 
     printf("\nWelcome to \033[1;36mAlpine\033[0m!\n\n");
 
+    printf("heap: address: %lx\n", (u64)heap_create());
     acpi_init();
 
     hcf();
