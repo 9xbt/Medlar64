@@ -99,8 +99,6 @@ void _start(void) {
     pic_remap();
     pmm_init();
     vmm_init();
-    
-    dprintf("kernel");
 
     hcf();
 }
