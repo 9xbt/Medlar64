@@ -1,6 +1,7 @@
 #include <dev/char/serial.h>
 #include <acpi/acpi.h>
 #include <lib/libc.h>
+#include <mm/pmm.h>
 #include <limine.h>
 #include <kernel.h>
 
@@ -9,8 +10,12 @@ struct limine_rsdp_request rsdp_request = {
     .revision = 0
 };
 
+bool acpi_use_xsdt = false;
+
+void *acpi_root_sdt;
+
 void *acpi_find_table(const char *name) {
-    
+
 }
 
 void acpi_init() {
@@ -22,5 +27,15 @@ void acpi_init() {
         hcf();
     }
 
+    if (rsdp->revision != 0) {
+        /* use xsdt */
+        acpi_use_xsdt = true;
+        acpi_xsdp *xsdp = (acpi_xsdp*)acpi_addr;
+        acpi_root_sdt = (acpi_xsdt*)HIGHER_HALF(xsdp->xsdt_addr);
+    } else {
+        acpi_root_sdt = (acpi_xsdt*)HIGHER_HALF(rsdp->rsdt_addr);
+    }
+
     dprintf("acpi: root table: %lx\n", (u64)acpi_addr);
+    dprintf("acpi: rsdt: %lx\n", (u64)acpi_root_sdt);
 }
