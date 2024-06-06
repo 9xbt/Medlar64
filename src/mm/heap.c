@@ -16,7 +16,7 @@ __attribute__((no_sanitize("undefined")))
 void *heap_alloc(heap *h, u64 n) {
     u64 pages = DIV_CEILING(sizeof(heap_block) + n, PAGE_SIZE);
     heap_block *block = (heap_block*)HIGHER_HALF(pmm_alloc(pages));
-    block->magic = HEAP_MAGIC;
+    h->block_head->magic = HEAP_MAGIC;
     block->size = n;
     block->used = true;
     block->prev = h->block_head->prev;
@@ -24,4 +24,18 @@ void *heap_alloc(heap *h, u64 n) {
     h->block_head->prev->next = block;
     h->block_head->prev = block;
     return (void*)block + sizeof(heap_block);
+}
+
+void heap_free(heap *h, void *ptr) {
+    heap_block *block = (heap_block*)(ptr - sizeof(heap_block));
+
+    if (block->magic != HEAP_MAGIC) {
+        dprintf("heap: invalid magic at pointer %lx\n", ptr);
+        return;
+    }
+
+    block->prev->next = block->next;
+    block->next->prev = block->prev;
+    u64 pages = DIV_CEILING(sizeof(heap_block) + block->size, PAGE_SIZE);
+    pmm_free(PHYSICAL(ptr - sizeof(heap_block)), pages);
 }

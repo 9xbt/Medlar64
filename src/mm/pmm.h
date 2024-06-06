@@ -13,4 +13,6 @@
 #define PHYSICAL(ptr) ((void*)((u64)ptr) - hhdm_offset)
 
 void pmm_init();
-void* pmm_alloc(usize n);
+
+void *pmm_alloc(usize n);
+void  pmm_free(void* p, usize n);

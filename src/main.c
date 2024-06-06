@@ -100,7 +100,18 @@ void _start(void) {
     vmm_init();
 
     printf("\nWelcome to \033[1;36mAlpine\033[0m!\n\n");
-    
+
+    kheap_init();
+
+    const char msg[] = "Hello!";
+
+    char *copy = kmalloc(sizeof(msg));
+    memcpy(copy, msg, sizeof(msg)); /* page fault occurs here */
+
+    printf(copy);
+
+    kfree(copy);
+
     acpi_init();
 
     hcf();
