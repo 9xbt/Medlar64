@@ -26,9 +26,17 @@ typedef struct {
 } madt_entry;
 
 typedef struct {
-    madt_entry un;
+    madt_entry entry;
     u8 id;
     u8 resv;
     u32 address;
     u32 gsi_base;
 } madt_ioapic;
+
+typedef struct {
+    madt_entry entry;
+    u8 bus_source;
+    u8 irq_source;
+    u32 gsi;
+    u16 flags;
+} madt_iso;
