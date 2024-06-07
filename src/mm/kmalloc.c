@@ -17,5 +17,5 @@ void kfree(void *ptr) {
 }
 
 void *krealloc(void *ptr, usize n) {
-    /* todo: implement this too */
+    heap_realloc(kernel_heap, ptr, n);
 }

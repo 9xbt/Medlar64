@@ -30,7 +30,7 @@ void heap_free(heap *h, void *ptr) {
     heap_block *block = (heap_block*)(ptr - sizeof(heap_block));
 
     if (block->magic != HEAP_MAGIC) {
-        dprintf("heap: invalid magic at pointer %lx\n", ptr);
+        dprintf("heap: bad magic at %lx\n", ptr);
         dprintf("magic: %x", block->magic);
         return;
     }
@@ -39,4 +39,17 @@ void heap_free(heap *h, void *ptr) {
     block->next->prev = block->prev;
     u64 pages = DIV_CEILING(sizeof(heap_block) + block->size, PAGE_SIZE);
     pmm_free(PHYSICAL(ptr - sizeof(heap_block)), pages);
+}
+
+void* heap_realloc(heap* h, void* ptr, u64 n) {
+    heap_block* block = (heap_block*)(ptr - sizeof(heap_block));
+    if (block->magic != HEAP_MAGIC) {
+        dprintf("heap: bad magic at %lx.\n", ptr);
+        return NULL;
+    }
+    void* new_ptr = heap_alloc(h, n);
+    if (!new_ptr) return NULL;
+    memcpy(new_ptr, ptr, block->size);
+    heap_free(h, ptr);
+    return new_ptr;
 }
