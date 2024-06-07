@@ -5,11 +5,10 @@ heap *kernel_heap;
 
 void kheap_init() {
     kernel_heap = heap_create();
-    dprintf("heap: kernel heap initialized\n");
+    dprintf("heap: created kernel heap\n");
 }
 
 void *kmalloc(usize n) {
-    dprintf("kernel heap address: %lx\n", kernel_heap);
     return heap_alloc(kernel_heap, n);
 }
 
