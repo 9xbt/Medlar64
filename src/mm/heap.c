@@ -31,7 +31,6 @@ void heap_free(heap *h, void *ptr) {
 
     if (block->magic != HEAP_MAGIC) {
         dprintf("heap: bad magic at %lx\n", ptr);
-        dprintf("magic: %x", block->magic);
         return;
     }
 
