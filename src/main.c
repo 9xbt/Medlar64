@@ -3,6 +3,7 @@
 #include <mm/pmm.h>
 #include <mm/vmm.h>
 #include <mm/heap.h>
+#include <mm/kmalloc.h>
 #include <sys/io.h>
 #include <sys/gdt.h>
 #include <sys/idt.h>

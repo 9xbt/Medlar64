@@ -38,21 +38,17 @@ void vmm_init() {
     uptr data_end = ALIGN_UP((uptr)data_end_ld, PAGE_SIZE);
 
     for (uptr text = text_start; text < text_end; text += PAGE_SIZE)
-      vmm_map(vmm_kernel_pm, text, text - virt_base + phys_base, PTE_PRESENT);
+        vmm_map(vmm_kernel_pm, text, text - virt_base + phys_base, PTE_PRESENT);
     for (uptr rodata = rodata_start; rodata < rodata_end; rodata += PAGE_SIZE)
-      vmm_map(vmm_kernel_pm, rodata, rodata - virt_base + phys_base,
-              PTE_PRESENT | PTE_NX);
+        vmm_map(vmm_kernel_pm, rodata, rodata - virt_base + phys_base, PTE_PRESENT | PTE_NX);
     for (uptr data = data_start; data < data_end; data += PAGE_SIZE)
-      vmm_map(vmm_kernel_pm, data, data - virt_base + phys_base,
-              PTE_PRESENT | PTE_WRITABLE | PTE_NX);
-    for (uptr addr = 0; addr < 0x100000000;
-        addr += PAGE_SIZE) { /* map the first 4gib */
-      vmm_map(vmm_kernel_pm, addr, addr, PTE_PRESENT | PTE_WRITABLE);
-      vmm_map(vmm_kernel_pm, (uptr)HIGHER_HALF(addr), addr,
-              PTE_PRESENT | PTE_WRITABLE);
+        vmm_map(vmm_kernel_pm, data, data - virt_base + phys_base, PTE_PRESENT | PTE_WRITABLE | PTE_NX);
+    for (uptr addr = 0; addr < 0x100000000; addr += PAGE_SIZE) { /* map the first 4gib */
+        vmm_map(vmm_kernel_pm, addr, addr, PTE_PRESENT | PTE_WRITABLE);
+        vmm_map(vmm_kernel_pm, (uptr)HIGHER_HALF(addr), addr, PTE_PRESENT | PTE_WRITABLE);
     }
 
-    dprintf("vmm: kernel page map located at %lx\n", (u64)vmm_kernel_pm);
+    dprintf("vmm: kernel's page map located at %lx\n", (u64)vmm_kernel_pm);
 }
 
 __attribute__((no_sanitize("undefined")))
@@ -60,7 +56,7 @@ uptr *vmm_get_next_lvl(uptr *lvl, uptr entry, u64 flags, bool alloc) {
     if (lvl[entry] & PTE_PRESENT) return HIGHER_HALF(PTE_GET_ADDR(lvl[entry]));
     if (!alloc) return NULL;
 
-    uptr *pml = (uptr *)HIGHER_HALF(pmm_alloc(1));
+    uptr *pml = (uptr*)HIGHER_HALF(pmm_alloc(1));
     memset(pml, 0, PAGE_SIZE);
     lvl[entry] = (uptr)PHYSICAL(pml) | flags;
     return pml;

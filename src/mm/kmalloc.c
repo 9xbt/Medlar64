@@ -9,6 +9,7 @@ void kheap_init() {
 }
 
 void *kmalloc(usize n) {
+    dprintf("kernel heap address: %lx\n", kernel_heap);
     return heap_alloc(kernel_heap, n);
 }
 

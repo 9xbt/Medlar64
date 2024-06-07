@@ -23,7 +23,7 @@ CFLAGS = \
     -mno-sse2 \
     -mno-80387 \
     -mno-red-zone \
-	-fsanitize=undefined
+#	-fsanitize=undefined
 	
 # C preprocessor flags
 CPPFLAGS = \
@@ -55,7 +55,8 @@ QEMUFLAGS = \
 	-debugcon stdio \
 	-cdrom $(IMAGE_NAME).iso \
 	-boot d \
-	-no-reboot -no-shutdown
+	-no-reboot -no-shutdown \
+#	-s -S
 
 # Source files
 CFILES := $(shell cd src && find -L * -type f -name '*.c')
