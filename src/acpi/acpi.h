@@ -46,3 +46,4 @@ typedef struct {
 } acpi_xsdt;
 
 void acpi_init();
+void *acpi_find_table(const char *signature);

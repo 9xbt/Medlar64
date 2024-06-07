@@ -122,5 +122,7 @@ limine:
 clean:
 	rm -rf obj
 	rm -f $(IMAGE_NAME).iso
+
+distclean:
 	rm -rf limine
 	rm -f src/limine.h

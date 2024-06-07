@@ -17,5 +17,18 @@ typedef struct {
     u32 lapic_addr;
     u32 flags;
 
-    char interrupt_devices[];
-} apci_madt;
+    char table[];
+} acpi_madt;
+
+typedef struct {
+    u8 type;
+    u8 length;
+} madt_entry;
+
+typedef struct {
+    madt_entry un;
+    u8 id;
+    u8 resv;
+    u32 address;
+    u32 gsi_base;
+} madt_ioapic;
