@@ -6,6 +6,7 @@ madt_iso *madt_iso_list[128];
 u32 madt_ioapic_len = 0;
 u32 madt_iso_len = 0;
 
+__attribute__((no_sanitize("alignment")))
 void madt_init() {
     acpi_madt *madt = (acpi_madt*)acpi_find_table("APIC");
 

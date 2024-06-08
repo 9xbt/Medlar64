@@ -14,6 +14,7 @@ bool acpi_use_xsdt = false;
 
 void *acpi_root_sdt;
 
+__attribute__((no_sanitize("alignment")))
 void *acpi_find_table(const char *signature) {
     if (!acpi_use_xsdt) {
         acpi_rsdt *rsdt = (acpi_rsdt*)acpi_root_sdt;
