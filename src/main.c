@@ -11,6 +11,8 @@
 #include <dev/char/serial.h>
 #include <lib/libc.h>
 #include <lib/printf.h>
+#include <acpi/acpi.h>
+#include <acpi/madt.h>
 #include <flanterm/flanterm.h>
 #include <flanterm/backends/fb.h>
 
@@ -104,6 +106,7 @@ void _start(void) {
 
     kheap_init();
     acpi_init();
+    madt_init();
 
     hcf();
 }

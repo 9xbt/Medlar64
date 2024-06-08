@@ -40,3 +40,5 @@ typedef struct {
     u32 gsi;
     u16 flags;
 } madt_iso;
+
+void madt_init();

@@ -10,7 +10,7 @@ void madt_init() {
     acpi_madt *madt = (acpi_madt*)acpi_find_table("APIC");
 
     int i = 0;
-    for (;;) {
+    while (i <= madt->length - sizeof(madt)) {
         madt_entry *entry = (madt_entry*)(madt->table + i);
 
         switch (entry->type) {
@@ -24,4 +24,6 @@ void madt_init() {
 
         i += entry->length;
     }
+
+    dprintf("madt: ioapic count: %d\n", madt_ioapic_len);
 }
