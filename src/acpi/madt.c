@@ -6,6 +6,8 @@ madt_iso *madt_iso_list[128];
 u32 madt_ioapic_len = 0;
 u32 madt_iso_len = 0;
 
+madt_lapic_addr *lapic_addr;
+
 __attribute__((no_sanitize("alignment")))
 void madt_init() {
     acpi_madt *madt = (acpi_madt*)acpi_find_table("APIC");
@@ -19,12 +21,15 @@ void madt_init() {
                 madt_ioapic_list[madt_ioapic_len++] = (madt_ioapic*)entry;
                 break;
             case 2:
-
+                madt_iso_list[madt_iso_len++] = (madt_iso*)entry;
+                break;
+            case 5:
+                lapic_addr = (madt_lapic_addr*)entry;
                 break;
         }
 
         i += entry->length;
     }
 
-    dprintf("madt: ioapic count: %d\n", madt_ioapic_len);
+    dprintf("madt: initialized madt\n");
 }

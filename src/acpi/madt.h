@@ -41,4 +41,10 @@ typedef struct {
     u16 flags;
 } madt_iso;
 
+typedef struct {
+    madt_entry entry;
+    u16 reserved;
+    u64 lapic_address;
+} madt_lapic_addr;
+
 void madt_init();
