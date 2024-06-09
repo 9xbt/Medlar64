@@ -7,7 +7,7 @@
 #include <sys/io.h>
 #include <sys/gdt.h>
 #include <sys/idt.h>
-#include <dev/pic.h>
+#include <dev/lapic.h>
 #include <dev/char/serial.h>
 #include <lib/libc.h>
 #include <lib/printf.h>
@@ -98,7 +98,6 @@ void _start(void) {
 
     gdt_init();
     idt_init();
-    pic_remap();
     pmm_init();
     vmm_init();
 
@@ -107,6 +106,7 @@ void _start(void) {
     kheap_init();
     acpi_init();
     madt_init();
+    lapic_init();
 
     hcf();
 }

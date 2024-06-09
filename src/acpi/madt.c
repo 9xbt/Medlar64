@@ -30,6 +30,4 @@ void madt_init() {
 
         i += entry->length;
     }
-
-    dprintf("madt: initialized madt\n");
 }

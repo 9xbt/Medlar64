@@ -57,5 +57,5 @@ void acpi_init() {
     }
 
     dprintf("acpi: root table: %lx\n", (u64)acpi_addr);
-    dprintf("acpi: rsdt: %lx\n", (u64)acpi_root_sdt);
+    dprintf("acpi: root sdt: %lx\n", (u64)acpi_root_sdt);
 }
