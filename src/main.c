@@ -7,6 +7,7 @@
 #include <sys/io.h>
 #include <sys/gdt.h>
 #include <sys/idt.h>
+#include <dev/pic.h>
 #include <dev/lapic.h>
 #include <dev/char/serial.h>
 #include <lib/libc.h>
@@ -64,6 +65,10 @@ void mubsan_log(const char* fmt, ...) {
     hcf();
 }
 
+void int_test(regs *r) {
+    dprintf("Interrupt!\n");
+}
+
 void _start(void) {
     // Ensure the bootloader actually understands our base revision (see spec).
     if (LIMINE_BASE_REVISION_SUPPORTED == false)
@@ -107,6 +112,9 @@ void _start(void) {
     acpi_init();
     madt_init();
     lapic_init();
+    //pic_remap();
+
+    irq_register(1, int_test);
 
     hcf();
 }
