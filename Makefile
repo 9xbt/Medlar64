@@ -69,9 +69,7 @@ OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.a
 KERNEL = alpine
 IMAGE_NAME = alpine
 
-all: limine bin/$(KERNEL) iso run
-
-all-kvm: limine bin/$(KERNEL) iso run-kvm
+all: limine bin/$(KERNEL) iso
 
 run:
 	qemu-system-x86_64 $(QEMUFLAGS)

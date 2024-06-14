@@ -13,10 +13,10 @@ void lapic_write(u32 reg, u32 val) {
 }
 
 void lapic_eoi() {
-    lapic_write((u8)0xb0, 0);
+    lapic_write((u8)LAPIC_EOI, 0);
 }
 
 void lapic_init() {
-    lapic_write(0xf0, lapic_read(0xf0) | 0x100);
+    lapic_write(LAPIC_SIV, lapic_read(LAPIC_SIV) | 0x100);
     dprintf("lapic: initialized successfully\n");
 }
