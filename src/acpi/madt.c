@@ -12,7 +12,7 @@ __attribute__((no_sanitize("alignment")))
 void madt_init() {
     acpi_madt *madt = (acpi_madt*)acpi_find_table("APIC");
 
-    int i = 0;
+    u32 i = 0;
     while (i <= madt->length - sizeof(madt)) {
         madt_entry *entry = (madt_entry*)(madt->table + i);
 

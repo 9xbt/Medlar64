@@ -2,6 +2,10 @@
 #include <dev/lapic.h>
 #include <dev/char/serial.h>
 
+void lapic_calibrate_timer() {
+    
+}
+
 __attribute__((no_sanitize("undefined")))
 u32 lapic_read(u32 reg) {
     return *((u32*)(HIGHER_HALF(LAPIC_REGS) + reg));

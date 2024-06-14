@@ -20,3 +20,12 @@ void pit_init() {
 
     irq_register(0, pit_handler);
 }
+
+void pit_sleep(u64 ms) {
+    u64 start_ticks = pit_ticks;
+    u64 end_ticks = start_ticks + ms;
+
+    while (pit_ticks < end_ticks) {
+        asm volatile ("hlt");
+    }
+}

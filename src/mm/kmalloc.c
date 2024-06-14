@@ -1,3 +1,4 @@
+#include <dev/char/serial.h>
 #include <mm/kmalloc.h>
 #include <mm/heap.h>
 
@@ -13,9 +14,9 @@ void *kmalloc(usize n) {
 }
 
 void kfree(void *ptr) {
-    heap_free(kernel_heap, ptr);
+    heap_free(ptr);
 }
 
 void *krealloc(void *ptr, usize n) {
-    heap_realloc(kernel_heap, ptr, n);
+    return heap_realloc(kernel_heap, ptr, n);
 }

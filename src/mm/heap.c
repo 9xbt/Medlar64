@@ -1,3 +1,5 @@
+#include <dev/char/serial.h>
+#include <lib/libc.h>
 #include <mm/heap.h>
 #include <mm/pmm.h>
 
@@ -26,7 +28,7 @@ void *heap_alloc(heap *h, u64 n) {
     return (void*)block + sizeof(heap_block);
 }
 
-void heap_free(heap *h, void *ptr) {
+void heap_free(void *ptr) {
     heap_block *block = (heap_block*)(ptr - sizeof(heap_block));
 
     if (block->magic != HEAP_MAGIC) {
@@ -49,6 +51,6 @@ void* heap_realloc(heap* h, void* ptr, u64 n) {
     void* new_ptr = heap_alloc(h, n);
     if (!new_ptr) return NULL;
     memcpy(new_ptr, ptr, block->size);
-    heap_free(h, ptr);
+    heap_free(ptr);
     return new_ptr;
 }
