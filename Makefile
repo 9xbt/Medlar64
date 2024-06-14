@@ -45,8 +45,6 @@ LDFLAGS = \
 # NASM flags
 NASMFLAGS = \
 	-Wall \
-	-w-reloc-rel-dword \
-	-w-reloc-abs-qword \
     -f elf64
 
 # QEMU flags
