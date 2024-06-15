@@ -8,6 +8,7 @@
         "io.h": "c",
         "flanterm.h": "c",
         "type_traits": "c",
-        "*.old": "c"
+        "*.old": "c",
+        "acpi.h": "c"
     }
 }

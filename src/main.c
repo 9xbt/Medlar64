@@ -9,6 +9,7 @@
 #include <sys/idt.h>
 #include <dev/pit.h>
 #include <dev/lapic.h>
+#include <dev/ioapic.h>
 #include <dev/char/serial.h>
 #include <lib/libc.h>
 #include <lib/printf.h>
@@ -108,7 +109,11 @@ void _start(void) {
     acpi_init();
     madt_init();
     lapic_init();
-    pit_init();
+    ioapic_init();
+    //pit_init();
+    //lapic_calibrate_timer();
+
+    dprintf("kernel: nothing to do, halting...\n");
 
     hcf();
 }

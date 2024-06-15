@@ -47,4 +47,11 @@ typedef struct {
     u64 lapic_address;
 } madt_lapic_addr;
 
+extern madt_ioapic *madt_ioapic_list[64];
+extern madt_iso *madt_iso_list[64];
+extern u32 madt_ioapic_len;
+extern u32 madt_iso_len;
+
+extern madt_lapic_addr *lapic_addr;
+
 void madt_init();
