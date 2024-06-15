@@ -68,7 +68,6 @@ void ioapic_init() {
     madt_ioapic* ioapic = madt_ioapic_list[0];
 
     u32 id = ioapic_read(ioapic, IOAPIC_ID) >> 24;
-    u32 ver = ioapic_read(ioapic, IOAPIC_VER);
     u32 count = ioapic_gsi_count(ioapic);
 
     if (id != ioapic->id) {

@@ -1,3 +1,4 @@
+#include <dev/char/serial.h>
 #include <acpi/acpi.h>
 #include <acpi/madt.h>
 
