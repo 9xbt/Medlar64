@@ -1,5 +1,6 @@
 #include <dev/char/kb.h>
 #include <mm/kmalloc.h>
+#include <lib/printf.h>
 #include <lib/libc.h>
 
 void shell_launch() {
@@ -10,8 +11,9 @@ void shell_launch() {
 
         kb_get_string(buf, 1024);
 
-        if (!strcmp(buf, "help")) {
-            printf("shell: commands: help, clear\n");
+        if (!strcmp(buf, "")) {
+        } else if (!strcmp(buf, "help")) {
+            printf("commands: help, clear\n");
         } else if (!strcmp(buf, "clear")) {
             printf("\033[2J\033[H");
         } else {

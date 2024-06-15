@@ -7,8 +7,9 @@
 #include <sys/io.h>
 
 u8 kb_key_pressed = false;
-u8 kb_current_char = '\0';
+u8 kb_char = '\0';
 u8 kb_caps = false;
+u8 kb_ctrl = false;
 u8 kb_shift = false;
 
 void kb_handler(regs* r) {
@@ -23,14 +24,17 @@ void kb_handler(regs* r) {
             case 0x36:
                 kb_shift = true;
                 break;
+            case 0x1d:
+                kb_ctrl = true;
+                break;
             case 0x3a:
                 kb_caps = !kb_caps;
                 break;
             default:
                 kb_key_pressed = true;
-                if (kb_shift) kb_current_char = kb_map_keys_shift[key];
-                else if (kb_caps) kb_current_char = kb_map_keys_caps[key];
-                else kb_current_char = kb_map_keys[key];
+                if (kb_shift) kb_char = kb_map_keys_shift[key];
+                else if (kb_caps) kb_char = kb_map_keys_caps[key];
+                else kb_char = kb_map_keys[key];
                 break;
         }
     } else {
@@ -41,6 +45,9 @@ void kb_handler(regs* r) {
             case 0xb6:
                 kb_shift = false;
                 break;
+            case 0x9d:
+                kb_ctrl = false;
+                break;
         }
     }
 
@@ -50,7 +57,7 @@ void kb_handler(regs* r) {
 char kb_get_char() {
     if (kb_key_pressed) {
         kb_key_pressed = false;
-        return kb_current_char;
+        return kb_char;
     } else {
         return '\0';
     }
@@ -63,37 +70,45 @@ void kb_get_string(char* buf, usize n) {
     for (;;) {
         asm volatile ("hlt");
 
-        switch(kb_current_char) {
+        switch(kb_char) {
             case '\0':
                 break;
 
             case '\n':
                 printf("\n");
-                kb_current_char = 0;
+                kb_char = 0;
                 return;
 
             case '\b':
                 if (pos <= 0)
                     break;
             
-                printf("%c \b", kb_current_char);
+                printf("%c \b", kb_char);
 
                 buf[pos] = 0;
                 pos--;
                 break;
 
             default:
+                if (kb_ctrl && (kb_char == 'l' || kb_char == 'L')) {
+                    printf("\033[2J\033[H");
+                    
+                    memset(buf, 0, n);
+                    kb_char = 0;
+                    return;
+                }
+
                 if (pos >= n - 1)
                     break;
 
-                printf("%c", kb_current_char);
+                printf("%c", kb_char);
 
-                buf[pos] = kb_current_char;
+                buf[pos] = kb_char;
                 pos++;
                 break;
         }
 
-        kb_current_char = 0;
+        kb_char = 0;
     }
 }
 
