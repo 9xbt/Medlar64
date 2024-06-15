@@ -3,8 +3,8 @@
 
 madt_ioapic *madt_ioapic_list[64];
 madt_iso *madt_iso_list[64];
-u32 madt_ioapic_len = 0;
-u32 madt_iso_len = 0;
+u32 madt_ioapics = 0;
+u32 madt_isos = 0;
 
 madt_lapic_addr *lapic_addr;
 
@@ -18,10 +18,10 @@ void madt_init() {
 
         switch (entry->type) {
             case 1:
-                madt_ioapic_list[madt_ioapic_len++] = (madt_ioapic*)entry;
+                madt_ioapic_list[madt_ioapics++] = (madt_ioapic*)entry;
                 break;
             case 2:
-                madt_iso_list[madt_iso_len++] = (madt_iso*)entry;
+                madt_iso_list[madt_isos++] = (madt_iso*)entry;
                 break;
             case 5:
                 lapic_addr = (madt_lapic_addr*)entry;
