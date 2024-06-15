@@ -9,6 +9,7 @@
         "flanterm.h": "c",
         "type_traits": "c",
         "*.old": "c",
-        "acpi.h": "c"
+        "acpi.h": "c",
+        "string_view": "c"
     }
 }

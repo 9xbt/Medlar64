@@ -17,34 +17,28 @@ u64 pmm_used_pages = 0;
 u64 pmm_page_count = 0;
 
 void pmm_init() {
-    /* TODO: maybe use largest all memmap entries if possible */
     pmm_memmap = memmap_request.response;
     struct limine_memmap_entry** entries = pmm_memmap->entries;
+    struct limine_memmap_entry* default_memmap = NULL;
 
     u64 higher_address = 0;
     u64 top_address = 0;
 
     for (u64 i = 0; i < pmm_memmap->entry_count; i++) {
         if (entries[i]->type != LIMINE_MEMMAP_USABLE) continue; /* ignore unusable memmaps */
+        if (default_memmap == NULL || entries[i]->length > default_memmap->length) default_memmap = entries[i]; /* store largest memmap */
         top_address = entries[i]->base + entries[i]->length;
-        if (top_address > higher_address)
-            higher_address = top_address;
+        if (top_address > higher_address) higher_address = top_address; /* store the higher address */
     }
 
     pmm_page_count = higher_address / PAGE_SIZE;
     u64 bitmap_size = ALIGN_UP(pmm_page_count / 8, PAGE_SIZE);
 
-    for (u64 i = 0; i < pmm_memmap->entry_count; i++) {
-        if (entries[i]->type != LIMINE_MEMMAP_USABLE || entries[i]->length < bitmap_size) continue;
-        /* we found a usuable memmap! use it! */
-        pmm_bitmap = (u8*)HIGHER_HALF(entries[i]->base); /* use the higher half of memory */
-        memset(pmm_bitmap, 0xFF, bitmap_size);
-        /* since we're storing the bitmap at the start of the memmap, subtract */
-        /* the size of the bitmap to the memmap entry */
-        entries[i]->base += bitmap_size;
-        entries[i]->length -= bitmap_size;
-        break;
-    }
+    pmm_bitmap = (u8*)HIGHER_HALF(default_memmap->base); /* use the higher half of memory */
+    memset(pmm_bitmap, 0xFF, bitmap_size);
+    /* since we're storing the bitmap at the start of the memmap, subtract the size of the bitmap to the memmap entry */
+    default_memmap->base += bitmap_size;
+    default_memmap->length -= bitmap_size;
 
     for (u64 i = 0; i < pmm_memmap->entry_count; i++) {
         if (entries[i]->type != LIMINE_MEMMAP_USABLE) continue;
@@ -53,6 +47,7 @@ void pmm_init() {
     }
 
     dprintf("pmm: initialized at address %lx\n", (u64)pmm_bitmap);
+    dprintf("pmm: usable memory: %ldkb\n", (u64)default_memmap->length / 1000);
 }
 
 u64 pmm_find_pages(u64 n) {

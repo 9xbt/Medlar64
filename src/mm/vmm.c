@@ -10,6 +10,7 @@ extern symbol rodata_start_ld;
 extern symbol rodata_end_ld;
 extern symbol data_start_ld;
 extern symbol data_end_ld;
+
 struct limine_kernel_address_request kernel_address_request = {
     .id = LIMINE_KERNEL_ADDRESS_REQUEST,
     .revision = 0
