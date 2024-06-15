@@ -64,8 +64,8 @@ HEADER_DEPS := $(addprefix obj/,$(CFILES:.c=.c.d) $(ASFILES:.S=.S.d))
 
 # Output
 OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.asm.o))
-KERNEL = alpine
-IMAGE_NAME = alpine
+KERNEL = Medlar64
+IMAGE_NAME = medlar64
 
 all: limine bin/$(KERNEL) iso
 
