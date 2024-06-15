@@ -110,7 +110,7 @@ void _start(void) {
     pit_init();
     lapic_calibrate_timer();
 
-    printf("\nWelcome to \033[1;36mAlpine\033[0m!\n\n");
+    printf("\nWelcome to \033[1;36mMedlar64\033[0m!\n\n");
 
     hcf();
 }
