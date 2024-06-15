@@ -102,18 +102,15 @@ void _start(void) {
     idt_init();
     pmm_init();
     vmm_init();
-
-    printf("\nWelcome to \033[1;36mAlpine\033[0m!\n\n");
-
     kheap_init();
     acpi_init();
     madt_init();
     lapic_init();
     ioapic_init();
-    //pit_init();
-    //lapic_calibrate_timer();
+    pit_init();
+    lapic_calibrate_timer();
 
-    dprintf("kernel: nothing to do, halting...\n");
+    printf("\nWelcome to \033[1;36mAlpine\033[0m!\n\n");
 
     hcf();
 }

@@ -9,3 +9,4 @@
 #define IOAPIC_IOWIN  0x10
 
 void ioapic_init();
+void ioapic_redirect_irq(u32 lapic_id, u8 vector, u8 irq, bool mask);

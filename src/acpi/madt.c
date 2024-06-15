@@ -30,4 +30,8 @@ void madt_init() {
 
         i += entry->length;
     }
+
+    dprintf("acpi: madt: %lx\n", (u64)madt);
+    dprintf("acpi: madt: ioapic count: %d\n", madt_ioapics);
+    dprintf("acpi: madt: iso count: %d\n", madt_isos);
 }

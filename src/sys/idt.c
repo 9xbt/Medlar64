@@ -1,4 +1,5 @@
 #include <sys/idt.h>
+#include <dev/ioapic.h>
 #include <dev/char/serial.h>
 
 __attribute__((aligned(0x10)))
@@ -70,6 +71,8 @@ void idt_set_entry(u8 vector, void* isr, u8 flags) {
 }
 
 void irq_register(u8 vector, void* handler) {
+    if (vector <= 15)
+        ioapic_redirect_irq(0, vector + 32, vector, false);
     irq_handlers[vector] = handler;
 }
 

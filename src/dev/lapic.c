@@ -34,7 +34,7 @@ void lapic_calibrate_timer() {
 
     lapic_stop_timer();
 
-    dprintf("lapic: calibrated timer\n");
+    dprintf("apic: calibrated timer\n");
 }
 
 __attribute__((no_sanitize("undefined")))
@@ -53,5 +53,5 @@ void lapic_eoi() {
 
 void lapic_init() {
     lapic_write(LAPIC_SIV, lapic_read(LAPIC_SIV) | 0x100);
-    dprintf("lapic: initialized successfully\n");
+    dprintf("apic: initialized lapic at address %lx\n", LAPIC_REGS);
 }

@@ -9,7 +9,6 @@ u64 pit_ticks = 0;
 void pit_handler(regs* r) {
     (void)r;
     pit_ticks++;
-    dprintf("pit!");
     lapic_eoi();
 }
 
@@ -21,8 +20,6 @@ void pit_init() {
     outb(PIT_DAT, (u8)(divisor >> 8));
 
     irq_register(0, pit_handler);
-
-    dprintf("pit: pit initialized at %dhz\n", PIT_FREQ);
 }
 
 void pit_sleep(u64 ms) {

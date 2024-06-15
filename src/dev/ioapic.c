@@ -21,6 +21,7 @@ u64 ioapic_gsi_count(madt_ioapic* ioapic) {
     return (ioapic_read(ioapic, IOAPIC_VER) >> 16) & 0xff;
 }
 
+__attribute__((no_sanitize("undefined")))
 madt_ioapic* ioapic_get_gsi(u32 gsi) {
     for (u64 i = 0; i < madt_ioapics; i++)
         if (madt_ioapic_list[i]->gsi_base <= gsi && madt_ioapic_list[i]->gsi_base + ioapic_gsi_count(madt_ioapic_list[i]) > gsi)
@@ -28,6 +29,7 @@ madt_ioapic* ioapic_get_gsi(u32 gsi) {
     return NULL;
 }
 
+__attribute__((no_sanitize("undefined")))
 void ioapic_redirect_gsi(u32 lapic_id, u8 vector, u32 gsi, u16 flags, bool mask) {
     madt_ioapic* ioapic = ioapic_get_gsi(gsi);
 
@@ -47,13 +49,12 @@ void ioapic_redirect_gsi(u32 lapic_id, u8 vector, u32 gsi, u16 flags, bool mask)
     ioapic_write(ioapic, redirect_table + 1, (u32)(redirect >> 32)); /* high 32 bits */
 }
 
+__attribute__((no_sanitize("undefined")))
 void ioapic_redirect_irq(u32 lapic_id, u8 vector, u8 irq, bool mask) {
     u8 index = 0;
-    madt_iso* iso = NULL;
-
     while (index < madt_isos) {
         if (madt_iso_list[index]->irq_source == irq) {
-            ioapic_redirect_gsi(lapic_id, vector, iso->gsi, madt_iso_list[index]->flags, mask);
+            ioapic_redirect_gsi(lapic_id, vector, madt_iso_list[index]->gsi, madt_iso_list[index]->flags, mask);
             return;
         }
         index++;
@@ -71,8 +72,8 @@ void ioapic_init() {
     u32 count = ioapic_gsi_count(ioapic);
 
     if (id != ioapic->id) {
-        dprintf("ioapic: apic id mismatch\n");
-        dprintf("ioapic: expected %u but got %u\n", ioapic->id, id);
+        dprintf("apic: apic id mismatch\n");
+        dprintf("apic: expected %u but got %u\n", ioapic->id, id);
         return;
     }
 
@@ -81,5 +82,5 @@ void ioapic_init() {
         ioapic_write(ioapic, IOAPIC_REDTBL + (2 * i) + 1, 0); /* high 32 bits - redirect to cpu 0 */
     }
 
-    dprintf("ioapic: initialized ioapic with %d interrupts\n", count + 1);
+    dprintf("apic: initialized ioapic with %d interrupts\n", count + 1);
 }
