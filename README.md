@@ -6,7 +6,7 @@ A 64-bit operating system written from scratch with its own kernel in C
 *Medlar running in a VM with QEMU for Windows*
 
 ## Features
-- ACPI
+- Basic ACPI
 - PMM, VMM & Heap
 - LAPIC & IOAPIC
 - PS/2 Driver
