@@ -10,11 +10,13 @@
 #include <dev/pit.h>
 #include <dev/lapic.h>
 #include <dev/ioapic.h>
+#include <dev/char/kb.h>
 #include <dev/char/serial.h>
 #include <lib/libc.h>
 #include <lib/printf.h>
 #include <acpi/acpi.h>
 #include <acpi/madt.h>
+#include <utils/shell.h>
 #include <flanterm/flanterm.h>
 #include <flanterm/backends/fb.h>
 
@@ -110,8 +112,11 @@ void _start(void) {
     ioapic_init();
     pit_init();
     lapic_calibrate_timer();
+    kb_init();
 
     printf("\nWelcome to \033[1;36mMedlar64\033[0m!\n\n");
+
+    shell_launch();
 
     hcf();
 }
