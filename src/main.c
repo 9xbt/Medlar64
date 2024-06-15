@@ -99,6 +99,7 @@ void _start(void) {
     );
 
     gdt_init();
+    serial_init();
     idt_init();
     pmm_init();
     vmm_init();
