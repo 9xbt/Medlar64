@@ -34,7 +34,6 @@ typedef struct {
     u64 rcx;
     u64 rax;
     u64 int_no;
-    u64 err_code;
     u64 rip;
     u64 cs;
     u64 rflags;
