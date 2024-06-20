@@ -49,14 +49,12 @@ void hcf(void) {
 }
 
 void putchar_(char c) {
-    char str[] = {c};
-    flanterm_write(ft_ctx, str, 1);
+    flanterm_write(ft_ctx, &c, 1);
 }
 
 void mubsan_write_char(char c, void* extra) {
     (void)extra;
-    char msg[] = {c, 0};
-    dprintf(msg);
+    flanterm_write(ft_ctx, &c, 1);
 }
 
 void mubsan_log(const char* fmt, ...) {
