@@ -85,8 +85,8 @@ void kb_get_string(char* buf, usize n) {
             
                 printf("%c \b", kb_char);
 
-                buf[pos] = 0;
                 pos--;
+                buf[pos] = 0;
                 break;
 
             default:
