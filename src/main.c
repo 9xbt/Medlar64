@@ -7,6 +7,7 @@
 #include <sys/io.h>
 #include <sys/gdt.h>
 #include <sys/idt.h>
+#include <sys/sched.h>
 #include <dev/pit.h>
 #include <dev/lapic.h>
 #include <dev/ioapic.h>
@@ -111,6 +112,7 @@ void _start(void) {
     pit_init();
     lapic_calibrate_timer();
     kb_init();
+    sched_init();
 
     printf("\nWelcome to \033[1;36mMedlar64\033[0m!\n\n");
 

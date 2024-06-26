@@ -11,18 +11,22 @@ struct limine_rsdp_request rsdp_request = {
 };
 
 bool acpi_use_xsdt = false;
-
 void *acpi_root_sdt;
 
 __attribute__((no_sanitize("alignment")))
 void *acpi_find_table(const char *signature) {
+    dprintf("acpi: searching for %s\n", signature);
+
     if (!acpi_use_xsdt) {
         acpi_rsdt *rsdt = (acpi_rsdt*)acpi_root_sdt;
         u32 entries = (rsdt->sdt.length - sizeof(rsdt->sdt)) / 4;
         
         for (u32 i = 0; i < entries; i++) {
             acpi_sdt *sdt = (acpi_sdt*)HIGHER_HALF(*((u32*)rsdt->table + i));
-            if (!memcmp(sdt->signature, signature, 4)) return (void*)sdt;
+            if (!memcmp(sdt->signature, signature, 4)) {
+                dprintf("acpi: found %s at address %lx\n", signature, (u32)sdt);
+                return (void*)sdt;
+            }
         }
         return NULL;
     }
@@ -33,8 +37,13 @@ void *acpi_find_table(const char *signature) {
         
     for (u32 i = 0; i < entries; i++) {
         acpi_sdt *sdt = (acpi_sdt*)HIGHER_HALF(*((u64*)rsdt->table + i));
-        if (!memcmp(sdt->signature, signature, 4)) return (void*)sdt;
+        if (!memcmp(sdt->signature, signature, 4)) {
+            dprintf("acpi: found %s at address %lx\n", signature, (u64)sdt);
+            return (void*)sdt;
+        }
     }
+
+    dprintf("acpi: \033[91merror:\033[0m couldn't find table!\n");
     return NULL;
 }
 

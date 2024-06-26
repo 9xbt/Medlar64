@@ -45,15 +45,18 @@ LDFLAGS = \
 # NASM flags
 NASMFLAGS = \
 	-Wall \
+	-w-reloc-rel \
+	-w-reloc-abs \
     -f elf64
 
 # QEMU flags
 QEMUFLAGS = \
 	-m 4G \
-	-debugcon stdio \
+	-serial stdio \
 	-cdrom $(IMAGE_NAME).iso \
 	-boot d \
 	-no-reboot -no-shutdown \
+	-display sdl \
 #	-s -S
 
 # Source files
@@ -69,10 +72,10 @@ IMAGE_NAME = medlar64
 
 all: limine bin/$(KERNEL) iso
 
-run:
+run: all
 	qemu-system-x86_64 $(QEMUFLAGS)
 
-run-kvm:
+run-kvm: all
 	qemu-system-x86_64 $(QEMUFLAGS) -enable-kvm
 
 iso:
